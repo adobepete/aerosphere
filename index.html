@@ -29,7 +29,7 @@ div.desc {
   {
     aero.OnFileDownloaded = function(args) {
       console.log(args["url"] + "downloaded to " + args["path"]);
-    }
+    }.bind(aero);
   }
   function DownloadFile(url)
   {
