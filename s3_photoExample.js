@@ -1,6 +1,6 @@
-var albumBucketName = "BUCKET_NAME";
-var bucketRegion = "REGION";
-var IdentityPoolId = "IDENTITY_POOL_ID";
+var albumBucketName = "aeropete1";
+var bucketRegion = "us-east-2";
+var IdentityPoolId = "us-east-2:fc6d007c-3a2b-4372-be29-0f442684fdd8";
 
 AWS.config.update({
   region: bucketRegion,
