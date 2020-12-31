@@ -20,23 +20,23 @@ function imageClicked(url)
 
     if(url.includes(encodeURI("AeroSphere QR Code")))
     {
-        experienceURL = "https://adobeaero.app.link/PUpymldUFcb";
+        experienceURL = escape("https://adobeaero.app.link/PUpymldUFcb");
     }
     else if(url.includes(encodeURI("BoomBoxTop")))
     {
-        experienceURL = "https://adobeaero.app.link/aQzJWCylBcb";
+        experienceURL = escape("https://adobeaero.app.link/aQzJWCylBcb");
     }
     else if(url.includes(encodeURI("ElwayAutograph")))
     {
-        experienceURL = "https://adobeaero.app.link/ujyyMgMkBcb";
+        experienceURL = escape("https://adobeaero.app.link/ujyyMgMkBcb");
     }
     else if(url.includes(encodeURI("MickeyMantle")))
     {
-        experienceURL = "https://adobeaero.app.link/mNW1KegHzcb";     
+        experienceURL = escape("https://adobeaero.app.link/mNW1KegHzcb");     
     }
     else if(url.includes(encodeURI("Ultimaker")))
     {
-        experienceURL = "https://adobeaero.app.link/jCcj3e6lBcb";
+        experienceURL = escape("https://adobeaero.app.link/jCcj3e6lBcb");
     }
 
 
