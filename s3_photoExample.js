@@ -40,7 +40,7 @@ function imageClicked(url)
     }
 
 
-    aero.openURL({"openURL":experienceURL});
+    aero.openURL({"url":experienceURL});
     aero.hideWebView({"webViewID":"AeroSphere"});
 }
 
