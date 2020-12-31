@@ -41,7 +41,7 @@ function imageClicked(url)
 
 
     aero.openURL({"openURL":experienceURL});
-    aero.hideWebView({"webViewID":""});
+    aero.hideWebView({"webViewID":"AeroSphere"});
 }
 
 function listAlbums() {
