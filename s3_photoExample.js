@@ -14,6 +14,36 @@ var s3 = new AWS.S3({
   params: { Bucket: albumBucketName }
 });
 
+function imageClicked(url)
+{
+    var experienceURL = "";
+
+    if(url.includes(encodeURI("AeroSphere QR Code")))
+    {
+        experienceURL = "https://adobeaero.app.link/PUpymldUFcb";
+    }
+    else if(url.includes(encodeURI("BoomBoxTop")))
+    {
+        experienceURL = "https://adobeaero.app.link/aQzJWCylBcb";
+    }
+    else if(url.includes(encodeURI("ElwayAutograph")))
+    {
+        experienceURL = "https://adobeaero.app.link/ujyyMgMkBcb";
+    }
+    else if(url.includes(encodeURI("MickeyMantle")))
+    {
+        experienceURL = "https://adobeaero.app.link/mNW1KegHzcb";     
+    }
+    else if(url.includes(encodeURI("Ultimaker")))
+    {
+        experienceURL = "https://adobeaero.app.link/jCcj3e6lBcb";
+    }
+
+
+    aero.openURL({"openURL":experienceURL});
+    aero.hideWebView({"webViewID":""});
+}
+
 function listAlbums() {
   s3.listObjects({ Delimiter: "/" }, function(err, data) {
     if (err) {
@@ -94,7 +124,7 @@ function viewAlbum(albumName) {
       return getHtml([
         "<span>",
         "<div>",
-        '<img style="width:128px;height:128px;" src="' + photoUrl + '"/>',
+        '<img onclick="imageClicked(this.src)" style="width:128px;" src="' + photoUrl + '"/>',
         "</div>",
         "<div>",
         "<span onclick=\"deletePhoto('" +

@@ -1,31 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-     <!-- **DO THIS**: -->
-    <!--   Replace SDK_VERSION_NUMBER with the current SDK version number -->
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.819.0.min.js"></script>
-    <!-- <script>
-      AWS_SDK_LOAD_CONFIG=1;
-      // Initialize the Amazon Cognito credentials provider
-     AWS.config.region = 'us-east-2'; // Region
-     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-         IdentityPoolId: 'us-east-2:fc6d007c-3a2b-4372-be29-0f442684fdd8',
-     });
-</script> -->
-     <script src="./s3_photoExample.js"></script>
+    <script src="./s3_photoExample.js"></script>
     <script>
-      
-
        function getHtml(template) {
           return template.join('\n');
        }
        listAlbums();
-
-       
     </script>
   </head>
   <body>
-    <h1>My Photo Albums App</h1>
+    <h1>Aero Marker Albums</h1>
     <div id="app"></div>
   </body>
 </html>
