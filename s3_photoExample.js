@@ -66,7 +66,7 @@ function imageClicked(url)
 
     if(url.includes(encodeURI("AeroSphere QR Code")))
     {
-        experienceURL = escape("https://adobeaero.app.link/PUpymldUFcb");
+        experienceURL = escape("https://adobeaero.app.link/jPAS09i8Fcb");
     }
     else if(url.includes(encodeURI("BoomBoxTop")))
     {
@@ -86,7 +86,7 @@ function imageClicked(url)
     }
 
 
-    //aero.openURL({"url":experienceURL});
+    aero.openURL({"url":experienceURL});
     minimize();
 }
 
