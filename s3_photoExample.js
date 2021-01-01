@@ -46,8 +46,8 @@ function minimize()
         "hOffset":0,
         "vAlign":"top",
         "hAlign":"left",
-        "width":10,
-        "height":5,
+        "width":12,
+        "height":6,
         "titleBar": false,
         "hideAeroUI": true
     }
