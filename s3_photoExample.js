@@ -212,6 +212,40 @@ function viewAlbum(albumName) {
   });
 }
 
+function playAlbum(albumName) {
+  var albumPhotosKey = encodeURIComponent(albumName) + "/";
+  s3.listObjects({ Prefix: albumPhotosKey }, function(err, data) {
+    if (err) {
+      return alert("There was an error viewing your album: " + err.message);
+    }
+    // 'this' references the AWS.Response instance that represents the response
+    var href = this.request.httpRequest.endpoint.href;
+    var bucketUrl = href + albumBucketName + "/";
+
+    var photos = data.Contents.map(function(photo) {
+      var photoKey = photo.Key;
+      var photoUrl = bucketUrl + encodeURIComponent(photoKey);
+      return getHtml([
+        "<div class='mySlides fade'>",
+        '<img onclick="imageClicked(this.src)" style="width:100%;" src="' + photoUrl + '"/>',
+        "</div>"
+      ]);
+    });
+    var htmlTemplate = [
+      "<h2>",
+      "You can find Aero Experiences on these images",
+      "</h2>",
+      "<div class='slideshow-container'>",
+      getHtml(photos),
+      "</div>",
+      "<a class='prev' onclick='plusSlides(-1)'>&#10094;</a>",
+      "<a class='next' onclick='plusSlides(1)'>&#10095;</a>"
+    ];
+    document.getElementById("app").innerHTML = getHtml(htmlTemplate);
+    showSlides();
+  });
+}
+
 function addPhoto(albumName) {
   var files = document.getElementById("photoupload").files;
   if (!files.length) {

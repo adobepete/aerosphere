@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="slideshow.css">
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.819.0.min.js"></script>
     <script src="./s3_photoExample.js"></script>
     <script>
        function getHtml(template) {
           return template.join('\n');
        }
-       listAlbums();
+       //listAlbums();
+       playAlbum("Basement1");
+
+       var slideIndex = 0;
+
+        function showSlides() {
+          var i;
+          var slides = document.getElementsByClassName("mySlides");
+          for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+          }
+          slideIndex++;
+          if (slideIndex > slides.length) {slideIndex = 1}
+          slides[slideIndex-1].style.display = "block";
+          setTimeout(showSlides, 2000); // Change image every 2 seconds
+        }
     </script>
     <style>
       body {
@@ -15,8 +32,8 @@
       }
       </style>
   </head>
-  <body>
-    <h1><img onclick="logoClicked(this.src);" style="width:32px;" src='Aero-Logo.gif'> Aero Marker Albums</h1>
+  <body onload="">
+    <img onclick="logoClicked(this.src);" style="width:32px;" src='Aero-Logo.gif'>
     <div id="app"></div>
   </body>
 </html>
