@@ -14,6 +14,50 @@ var s3 = new AWS.S3({
   params: { Bucket: albumBucketName }
 });
 
+var gIsMinimized = false;
+
+function maximize()
+{
+    gIsMinimized = false;
+    
+    aero.showWebView( {
+        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/",
+        "webViewID":"AeroSphere",
+        "vOffset":20,
+        "hOffset":0,
+        "vAlign":"top",
+        "hAlign":"left",
+        "width":100,
+        "height":65
+    }
+    );
+}
+
+function minimize()
+{
+    gIsMinimized = true;
+    
+    aero.showWebView( {
+        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/",
+        "webViewID":"AeroSphere",
+        "vOffset":20,
+        "hOffset":0,
+        "vAlign":"top",
+        "hAlign":"left",
+        "width":10,
+        "height":5
+    }
+    );
+}
+
+function logoClicked(url)
+{
+    if(gIsMinimized)   
+        maximize();
+    else
+        minimize();
+}
+
 function imageClicked(url)
 {
     var experienceURL = "";
@@ -40,8 +84,8 @@ function imageClicked(url)
     }
 
 
-    aero.openURL({"url":experienceURL});
-    aero.hideWebView({"webViewID":"AeroSphere"});
+    //aero.openURL({"url":experienceURL});
+    minimize();
 }
 
 function listAlbums() {
