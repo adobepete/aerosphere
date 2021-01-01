@@ -21,7 +21,7 @@ function maximize()
     gIsMinimized = false;
     
     aero.showWebView( {
-        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/",
+        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/?album=Basement1",
         "webViewID":"AeroSphere",
         "vOffset":15,
         "hOffset":0,
@@ -40,7 +40,7 @@ function minimize()
     gIsMinimized = true;
     
     aero.showWebView( {
-        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/",
+        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/?album=Basement1",
         "webViewID":"AeroSphere",
         "vOffset":15,
         "hOffset":0,
@@ -244,16 +244,18 @@ function playAlbum(albumName) {
     document.getElementById("app").innerHTML = getHtml(htmlTemplate);
     var slideIndex = 0;
 
-    var i;
-    var slides = document.getElementsByClassName("mySlides");
-    for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
+    function showSlides() {
+      var i;
+      var slides = document.getElementsByClassName("mySlides");
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) {slideIndex = 1}
+      slides[slideIndex-1].style.display = "block";
+      setTimeout(showSlides, 2000); // Change image every 2 seconds
     }
-    slideIndex++;
-    if (slideIndex > slides.length) {slideIndex = 1}
-    slides[slideIndex-1].style.display = "block";
-    setTimeout(showSlides, 2000); // Change image every 2 seconds
-        
+    showSlides();
   });
 }
 
