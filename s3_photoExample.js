@@ -21,7 +21,7 @@ function maximize()
     gIsMinimized = false;
     
     aero.showWebView( {
-        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/?album=Basement1",
+        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/",
         "webViewID":"AeroSphere",
         "vOffset":15,
         "hOffset":0,
@@ -40,7 +40,7 @@ function minimize()
     gIsMinimized = true;
     
     aero.showWebView( {
-        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/?album=Basement1",
+        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/",
         "webViewID":"AeroSphere",
         "vOffset":15,
         "hOffset":0,
@@ -237,9 +237,7 @@ function playAlbum(albumName) {
       "</h2>",
       "<div class='slideshow-container'>",
       getHtml(photos),
-      "</div>",
-      "<a class='prev' onclick='plusSlides(-1)'>&#10094;</a>",
-      "<a class='next' onclick='plusSlides(1)'>&#10095;</a>"
+      "</div>"
     ];
     document.getElementById("app").innerHTML = getHtml(htmlTemplate);
     var slideIndex = 0;
