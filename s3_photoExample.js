@@ -21,7 +21,7 @@ function maximize()
     gIsMinimized = false;
     
     aero.showWebView( {
-        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/",
+        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/?album=Basement1",
         "webViewID":"AeroSphere",
         "vOffset":15,
         "hOffset":0,
@@ -40,7 +40,7 @@ function minimize()
     gIsMinimized = true;
     
     aero.showWebView( {
-        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/",
+        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/?album=Basement1",
         "webViewID":"AeroSphere",
         "vOffset":15,
         "hOffset":0,
