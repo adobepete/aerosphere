@@ -28,7 +28,8 @@ function maximize()
         "vAlign":"top",
         "hAlign":"left",
         "width":100,
-        "height":65
+        "height":65,
+        "titleBar": false
     }
     );
 }
@@ -45,7 +46,8 @@ function minimize()
         "vAlign":"top",
         "hAlign":"left",
         "width":10,
-        "height":5
+        "height":5,
+        "titleBar": false
     }
     );
 }
