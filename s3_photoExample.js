@@ -49,7 +49,7 @@ function minimize()
         "width":10,
         "height":5,
         "titleBar": false,
-        "hideAeroUI": false
+        "hideAeroUI": true
     }
     );
 }
