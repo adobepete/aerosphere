@@ -23,13 +23,14 @@ function maximize()
     aero.showWebView( {
         "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/",
         "webViewID":"AeroSphere",
-        "vOffset":20,
+        "vOffset":15,
         "hOffset":0,
         "vAlign":"top",
         "hAlign":"left",
         "width":100,
-        "height":65,
-        "titleBar": false
+        "height":70,
+        "titleBar": false,
+        "hideAeroUI": true
     }
     );
 }
@@ -41,13 +42,14 @@ function minimize()
     aero.showWebView( {
         "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/",
         "webViewID":"AeroSphere",
-        "vOffset":20,
+        "vOffset":15,
         "hOffset":0,
         "vAlign":"top",
         "hAlign":"left",
         "width":10,
         "height":5,
-        "titleBar": false
+        "titleBar": false,
+        "hideAeroUI": false
     }
     );
 }
