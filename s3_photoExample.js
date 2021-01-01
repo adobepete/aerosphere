@@ -72,7 +72,7 @@ function imageClicked(url)
     }
     else if(url.includes(encodeURI("BoomBoxTop")))
     {
-        experienceURL = escape("https://adobeaero.app.link/G6oRkkbqHcb");
+        experienceURL = escape("https://adobeaero.app.link/yjosJv9qHcb");
     }
     else if(url.includes(encodeURI("ElwayAutograph")))
     {
