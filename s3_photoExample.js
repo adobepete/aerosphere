@@ -80,7 +80,7 @@ function imageClicked(url)
     }
     else if(url.includes(encodeURI("MickeyMantle")))
     {
-        experienceURL = escape("https://adobeaero.app.link/IUnsXVqqHcb);     
+        experienceURL = escape("https://adobeaero.app.link/IUnsXVqqHcb");     
     }
     else if(url.includes(encodeURI("Ultimaker")))
     {
