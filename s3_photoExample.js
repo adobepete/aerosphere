@@ -60,20 +60,30 @@ function InitializeAeroCallbacks()
     
     gQueueID = setInterval(CheckDownloadQueue, 2000);
 
+    aero.onImageMarkerFound = function(ret) {
+      console.log("OnImageMarkerUpdated: " + gImagesToTrack[ret["uuid"]]);
+      if(gCurrentImage == "")
+      {
+        gCurrentImage = ret["uuid"];
+        aero.openURL({"url":escape(gImagesToTrack[ret["uuid"]])});
+        //minimize();
+      }
+
+    }.bind(aero);
 
     aero.onImageMarkerUpdated = function(ret) {
       console.log("OnImageMarkerUpdated: " + ret["uuid"]);
       if(gCurrentImage == "")
       {
-        gCurrentImage = ret["uuid"];
-        aero.openURL({"url":escape(gImagesToTrack[ret["uuid"]])});
-        minimize();
+        //gCurrentImage = ret["uuid"];
+        //aero.openURL({"url":escape(gImagesToTrack[ret["uuid"]])});
+        //minimize();
       }
 
     }.bind(aero);
 
     aero.onImageMarkerLost = function(ret) {
-      console.log("OnImageMarkerLost: " + ret["uuid"]);
+      console.log("OnImageMarkerLost: " + gImagesToTrack[ret["uuid"]]);
       if(gCurrentImage == ret["uuid"])
       {
         gCurrentImage = "";
