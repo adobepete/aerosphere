@@ -17,14 +17,15 @@ var s3 = new AWS.S3({
 var gIsMinimized = false;
 var gImagesToTrack = {};
 var gCurrentImage = "";
-var gFilesToDwonload = [];
+var gDownloadQueue = [];
+var gMarkerQueue = [];
 var gIsDownloading = false;
-var gQueueID;
+var gIntervalID;
 var gSkipFirstScene = true;
 
 function DownloadFile(url)
   {
-    gFilesToDwonload.push(url);
+    gDownloadQueue.push(url);
   }
 
 function CheckDownloadQueue()
@@ -32,19 +33,35 @@ function CheckDownloadQueue()
     if(gIsDownloading)
       return;
 
-    if(gFilesToDwonload.length == 0) {
-      clearInterval(gQueueID);
+    if(gDownloadQueue.length == 0) {
+
+      if(gMarkerQueue.length == 0)
+      {
+        clearInterval(gIntervalID);
+      }
+      else
+      {
+        var imageObject = gMarkerQueue.pop();
+        AddImageMarker(imageObject.url, imageObject.path);
+      }
       return;
     }
 
-    var url = gFilesToDwonload.pop();
+    var url = gDownloadQueue.pop();
     window.location = url;
     gIsDownloading = true;
   }
 
+  function ImageMarkerDownloaded(url, path)
+  {
+    var tempImageMarekerInfo = {};
+    tempImageMarekerInfo.url = url;
+    tempImageMarekerInfo.path = path;
+    gMarkerQueue.push(tempImageMarekerInfo);
+  }
+
   function AddImageMarker(url, path)
   {
-
     aero.tempImageMarekerInfo = {};
     aero.tempImageMarekerInfo.url = url;
     aero.tempImageMarekerInfo.path = path;
@@ -64,10 +81,10 @@ function InitializeAeroCallbacks()
       console.log(args["url"] + "downloaded to " + args["path"]);
       gIsDownloading = false;
       var url = unescape(args["url"].substr(args["url"].lastIndexOf("https")));
-      AddImageMarker(url, args["path"]);
+      ImageMarkerDownloaded(url, args["path"]);
     }.bind(aero);
     
-    gQueueID = setInterval(CheckDownloadQueue, 2000);
+    gIntervalID = setInterval(CheckDownloadQueue, 2000);
 
     aero.onImageMarkerFound = function(ret) {
       if(gImagesToTrack[ret["uuid"]] == undefined)
@@ -76,7 +93,7 @@ function InitializeAeroCallbacks()
       console.log("OnImageMarkerFound: " + gImagesToTrack[ret["uuid"]]);
       var url = gImagesToTrack[ret["uuid"]].url;
 
-      if(gCurrentImage != url && gFilesToDwonload.length == 0)
+      if(gCurrentImage != url && gDownloadQueue.length == 0)
       {
         gCurrentImage = url;
         aero.openURL({"url":escape(url)});
@@ -97,11 +114,20 @@ function InitializeAeroCallbacks()
       for (const imageID in imagesToTrack) {
         var url = imagesToTrack[imageID].url;
         var path = imagesToTrack[imageID].path;
+    
         if(url != gCurrentImage)
-          AddImageMarker(url, path);
+        {
+          var tempImageMarekerInfo = {};
+          tempImageMarekerInfo.url = url;
+          tempImageMarekerInfo.path = path;
+          gMarkerQueue.push(tempImageMarekerInfo);
+        }
         else
+        {
           gImagesToTrack[imageID] = imagesToTrack[imageID];
+        }
       }
+      gIntervalID = setInterval(CheckDownloadQueue, 2000);
       
     }.bind(aero);
 
