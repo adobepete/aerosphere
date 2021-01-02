@@ -15,6 +15,46 @@ var s3 = new AWS.S3({
 });
 
 var gIsMinimized = false;
+var gImagesToTrack = {};
+var gCurrentImage = "";
+
+function InitializeAeroCallbacks()
+  {
+    aero.OnFileDownloaded = function(args) {
+      console.log(args["url"] + "downloaded to " + args["path"]);
+      aero.tempPath = args["path"];
+      aero.addImageMarker( { canUndo : false, 
+                              filename : args["path"], 
+                              physicalWidth : 0.75,
+                              serializable : false
+                            }, function(ret) {
+                              
+            gImagesToTrack[ret["uuid"]] = aero.tempPath;
+      }.bind(aero));
+    }.bind(aero);
+
+
+    aero.OnImageMarkerUpdated = function(ret) {
+      console.log("OnImageMarkerUpdated: " + ret["uuid"]);
+      if(gCurrentImage == "")
+      {
+        gCurrentImage = ret["uuid"];
+        aero.openURL({"url":escape(gImagesToTrack[ret["uuid"]])});
+        minimize();
+      }
+
+    }.bind(aero);
+
+    aero.OnImageMarkerLost = function(ret) {
+      console.log("OnImageMarkerLost: " + ret["uuid"]);
+      if(gCurrentImage == ret["uuid"])
+      {
+        gCurrentImage = "";
+      }
+    }.bind(aero);
+    
+
+  }
 
 function maximize()
 {
@@ -268,11 +308,18 @@ function addPhoto(albumName) {
   if (!files.length) {
     return alert("Please choose a file to upload first.");
   }
-  var url = prompt("Please enter the experience URL", "");
-  if (url == null) {
+  var url
+  
+  url = prompt("Please enter the experience URL", "");
+  if (url == "") {
     return;
   }
+  addPhotoInternal(albumName, url);
 
+}
+
+function addPhotoInternal(albumName, url)
+{
   var file = files[0];
   var fileName = url;//file.name;
   var albumPhotosKey = encodeURIComponent(albumName) + "/";
