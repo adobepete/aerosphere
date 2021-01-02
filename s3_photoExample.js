@@ -70,7 +70,7 @@ function InitializeAeroCallbacks()
 
     aero.onImageMarkerFound = function(ret) {
       console.log("OnImageMarkerFound: " + gImagesToTrack[ret["uuid"]]);
-      if(gCurrentImage == "" && gImagesToTrack[ret["uuid"]] != undefined)
+      if(gCurrentImage != gCurrentImage && gImagesToTrack[ret["uuid"]] != undefined)
       {
         gCurrentImage = ret["uuid"];
         var url = escape(gImagesToTrack[ret["uuid"]].url);
@@ -104,7 +104,7 @@ function InitializeAeroCallbacks()
       console.log("OnImageMarkerLost: " + gImagesToTrack[ret["uuid"]]);
       if(gCurrentImage == ret["uuid"])
       {
-         gCurrentImage = "";
+         //gCurrentImage = "";
       }
     }.bind(aero);
     
@@ -370,11 +370,11 @@ function addPhoto(albumName) {
   if (url == "") {
     return;
   }
-  addPhotoInternal(albumName, url);
+  addPhotoInternal(albumName, url, files);
 
 }
 
-function addPhotoInternal(albumName, url)
+function addPhotoInternal(albumName, url, files)
 {
   var file = files[0];
   var fileName = url;//file.name;
