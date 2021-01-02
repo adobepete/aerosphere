@@ -18,6 +18,7 @@ var gIsMinimized = false;
 var gImagesToTrack = {};
 var gCurrentImage = "";
 var gFilesToDwonload = [];
+var gIsDownloading = false;
 var gQueueID;
 
 function DownloadFile(url)
