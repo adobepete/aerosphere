@@ -22,6 +22,7 @@ var gMarkerQueue = [];
 var gIsDownloading = false;
 var gIntervalID;
 var gSkipFirstScene = true;
+var gMarkerAdding = false;
 
 function DownloadFile(url)
   {
@@ -39,7 +40,7 @@ function CheckDownloadQueue()
       {
         clearInterval(gIntervalID);
       }
-      else
+      else if(!gMarkerAdding)
       {
         var imageObject = gMarkerQueue.pop();
         AddImageMarker(imageObject.url, imageObject.path);
@@ -65,13 +66,14 @@ function CheckDownloadQueue()
     aero.tempImageMarekerInfo = {};
     aero.tempImageMarekerInfo.url = url;
     aero.tempImageMarekerInfo.path = path;
+    gMarkerAdding = true;
     aero.addImageMarker( { canUndo : false, 
                             filename : path, 
                             physicalWidth : 0.75,
                             serializable : false
                           }, function(ret) {
-                            
           gImagesToTrack[ret["uuid"]] = aero.tempImageMarekerInfo;
+          gMarkerAdding = false;
     }.bind(aero));
   }
 
