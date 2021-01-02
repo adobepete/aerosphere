@@ -57,14 +57,16 @@ function minimize()
 
 function toggleMode()
 {
+  var myURL = window.location.href;
+  if(myURL.includes("album="))
+  {
+    myURL = myURL.substring(0,myURL.indexOf("album=")-1);
+  }
+
   if(gNextMode == "PLAY")
-  {
-    window.location = "https://main.d2bl8ynaqy7ng6.amplifyapp.com/?album=Basement1";
-  }
-  else
-  {
-    window.location = "https://main.d2bl8ynaqy7ng6.amplifyapp.com/";
-  }
+    myURL += "?album=Basement1";
+
+  window.location = myURL;
 }
 
 
@@ -78,31 +80,7 @@ function logoClicked()
 
 function imageClicked(url)
 {
-    var experienceURL = "";
-
-    if(url.includes(encodeURI("AeroSphere QR Code")))
-    {
-        experienceURL = escape("https://adobeaero.app.link/tvIM6g5nHcb");
-    }
-    else if(url.includes(encodeURI("BoomBoxTop")))
-    {
-        experienceURL = escape("https://adobeaero.app.link/yjosJv9qHcb");
-    }
-    else if(url.includes(encodeURI("ElwayAutograph")))
-    {
-        experienceURL = escape("https://adobeaero.app.link/JgdDPsuqHcb");
-    }
-    else if(url.includes(encodeURI("MickeyMantle")))
-    {
-        experienceURL = escape("https://adobeaero.app.link/IUnsXVqqHcb");     
-    }
-    else if(url.includes(encodeURI("Ultimaker")))
-    {
-        experienceURL = escape("https://adobeaero.app.link/AZ84OcBqHcb");
-    }
-
-
-    aero.openURL({"url":experienceURL});
+    aero.openURL({"url":escape(url)});
     minimize();
 }
 
@@ -247,11 +225,15 @@ function playAlbum(albumName) {
     var photos = data.Contents.map(function(photo) {
       var photoKey = photo.Key;
       var photoUrl = bucketUrl + encodeURIComponent(photoKey);
-      return getHtml([
+      var myHTML = getHtml([
         "<div class='mySlides fade'>",
-        '<img onclick="imageClicked(this.src)" style="width:100%;" src="' + photoUrl + '"/>',
+        "<img onclick=\"imageClicked('" + photoKey.replace(albumPhotosKey, "") + "');\" style='width:100%;' src='",
+        photoUrl,
+        "'/>",
         "</div>"
       ]);
+      console.log(myHTML);
+      return myHTML;
     });
     var htmlTemplate = [
       "<h2>",
