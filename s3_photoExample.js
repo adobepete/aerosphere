@@ -17,17 +17,36 @@ var s3 = new AWS.S3({
 var gIsMinimized = false;
 var gImagesToTrack = {};
 var gCurrentImage = "";
+var gFilesToDwonload = [];
+var gQueueID;
 
 function DownloadFile(url)
   {
-    window.location = url;
+    gFilesToDwonload.push(url);
   }
+
+function CheckDownloadQueue()
+  {
+    if(gIsDownloading)
+      return;
+
+    if(gFilesToDwonload.length == 0) {
+      clearInterval(gQueueID);
+      return;
+    }
+
+    var url = gFilesToDwonload.pop();
+    window.location = url;
+    gIsDownloading = true;
+  }
+
 
 function InitializeAeroCallbacks()
   {
     aero.OnFileDownloaded = function(args) {
       console.log(args["url"] + "downloaded to " + args["path"]);
       aero.tempPath = args["path"];
+      gIsDownloading = false;
       aero.addImageMarker( { canUndo : false, 
                               filename : args["path"], 
                               physicalWidth : 0.75,
@@ -37,6 +56,8 @@ function InitializeAeroCallbacks()
             gImagesToTrack[ret["uuid"]] = aero.tempPath;
       }.bind(aero));
     }.bind(aero);
+    
+    gQueueID = setInterval(CheckDownloadQueue, 2000);
 
 
     aero.OnImageMarkerUpdated = function(ret) {
@@ -387,4 +408,9 @@ function deleteAlbum(albumName) {
       }
     );
   });
+}
+
+
+function getHtml(template) {
+  return template.join('\n');
 }
