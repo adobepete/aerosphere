@@ -10,15 +10,15 @@
           return template.join('\n');
        }
        var myURL = window.location.href;
-       var gMode = "EDIT";
-       if(!myURL.includes("album="))
+       var gNextMode = "EDIT";
+       if(myURL.includes("album="))
        {
-        gMode = "PLAY";
+        gNextMode = "EDIT";
         playAlbum(myURL.substring(myURL.indexOf("album=")+6));
        }
        else
        {
-        gMode = "EDIT";
+        gNextMode = "PLAY";
         listAlbums();
        }
 

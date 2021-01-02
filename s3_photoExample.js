@@ -57,14 +57,14 @@ function minimize()
 
 function toggleMode()
 {
-  if(gMode == "EDIT")
+  if(gNextMode == "EDIT")
   {
-    gMode = "PLAY";
+    gNextMode = "PLAY";
     window.location = "https://main.d2bl8ynaqy7ng6.amplifyapp.com/?album=Basement1";
   }
   else
   {
-    gMode = "EDIT";
+    gNextMode = "EDIT";
     window.location = "https://main.d2bl8ynaqy7ng6.amplifyapp.com/";
   }
 }
@@ -230,7 +230,7 @@ function viewAlbum(albumName) {
       "</button>"
     ];
     document.body.style.overflow = '';
-    document.getElementById("modeButton").innerHTML = gMode;
+    document.getElementById("modeButton").innerHTML = gNextMode;
     document.getElementById("app").innerHTML = getHtml(htmlTemplate);
   });
 }
@@ -263,7 +263,7 @@ function playAlbum(albumName) {
       "</div>"
     ];
     document.body.style.overflow = 'hidden';
-    document.getElementById("modeButton").innerHTML = gMode;
+    document.getElementById("modeButton").innerHTML = gNextMode;
     document.getElementById("app").innerHTML = getHtml(htmlTemplate);
     var slideIndex = 0;
 
