@@ -46,7 +46,7 @@ function InitializeAeroCallbacks()
   {
     aero.OnFileDownloaded = function(args) {
       console.log(args["url"] + "downloaded to " + args["path"]);
-      aero.tempPath = unescape(args["path"].substr(args["path"].lastIndexOf("https")));
+      aero.tempPath = unescape(args["url"].substr(args["url"].lastIndexOf("https")));
       gIsDownloading = false;
       aero.addImageMarker( { canUndo : false, 
                               filename : args["path"], 
