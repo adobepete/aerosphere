@@ -139,6 +139,7 @@ function listAlbums() {
         "Create New Album",
         "</button>"
       ];
+      document.getElementById("modeButton").innerHTML = gNextMode;
       document.getElementById("app").innerHTML = getHtml(htmlTemplate);
     }
   });
