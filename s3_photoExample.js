@@ -54,7 +54,23 @@ function minimize()
     );
 }
 
-function logoClicked(url)
+
+function toggleMode()
+{
+  if(gMode == "EDIT")
+  {
+    gMode = "PLAY";
+    window.location = "https://main.d2bl8ynaqy7ng6.amplifyapp.com/?album=Basement1";
+  }
+  else
+  {
+    gMode = "EDIT";
+    window.location = "https://main.d2bl8ynaqy7ng6.amplifyapp.com/";
+  }
+}
+
+
+function logoClicked()
 {
     if(gIsMinimized)   
         maximize();
@@ -183,7 +199,12 @@ function viewAlbum(albumName) {
         "X",
         "</span>",
         "<span>",
+
+        "<a href='",
         photoKey.replace(albumPhotosKey, ""),
+        "'>",
+        photoKey.replace(albumPhotosKey, ""),
+        "</a>",
         "</span>",
         "</div>",
         "</span>"
@@ -208,6 +229,8 @@ function viewAlbum(albumName) {
       "Back To Albums",
       "</button>"
     ];
+    document.body.style.overflow = '';
+    document.getElementById("modeButton").innerHTML = gMode;
     document.getElementById("app").innerHTML = getHtml(htmlTemplate);
   });
 }
@@ -239,6 +262,8 @@ function playAlbum(albumName) {
       getHtml(photos),
       "</div>"
     ];
+    document.body.style.overflow = 'hidden';
+    document.getElementById("modeButton").innerHTML = gMode;
     document.getElementById("app").innerHTML = getHtml(htmlTemplate);
     var slideIndex = 0;
 
@@ -262,8 +287,13 @@ function addPhoto(albumName) {
   if (!files.length) {
     return alert("Please choose a file to upload first.");
   }
+  var url = prompt("Please enter the experience URL", "");
+  if (url == null) {
+    return;
+  }
+
   var file = files[0];
-  var fileName = file.name;
+  var fileName = url;//file.name;
   var albumPhotosKey = encodeURIComponent(albumName) + "/";
 
   var photoKey = albumPhotosKey + fileName;

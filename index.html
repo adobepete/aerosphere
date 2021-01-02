@@ -10,25 +10,28 @@
           return template.join('\n');
        }
        var myURL = window.location.href;
+       var gMode = "EDIT";
        if(myURL.includes("album="))
        {
+        gMode = "PLAY";
         playAlbum(myURL.substring(myURL.indexOf("album=")+6));
        }
        else
        {
+        gMode = "EDIT";
         listAlbums();
        }
 
        
     </script>
-    <style>
-      body {
-        overflow: hidden; /* Hide scrollbars */
-      }
-      </style>
+    
   </head>
-  <body onload="">
-    <img onclick="logoClicked(this.src);" style="width:32px;" src='Aero-Logo.gif'>
+  <div id="rightpic" style="background-position: top right;float: right;" >
+    <a id="modeButton" href="javascript:toggleMode();" >EDIT</a>
+  </div>
+      <div id="leftpic" style="background-position: top left;" >
+        <img onclick="logoClicked();" style="width:32px;" src='Aero-Logo.gif'>
+      </div>
     <div id="app"></div>
   </body>
 </html>
