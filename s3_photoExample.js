@@ -48,7 +48,7 @@ function CheckDownloadQueue()
     aero.tempImageMarekerInfo.url = url;
     aero.tempImageMarekerInfo.path = path;
     aero.addImageMarker( { canUndo : false, 
-                            filename : args["path"], 
+                            filename : path, 
                             physicalWidth : 0.75,
                             serializable : false
                           }, function(ret) {
