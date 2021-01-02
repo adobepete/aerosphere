@@ -86,7 +86,7 @@ function InitializeAeroCallbacks()
       console.log("OnImageMarkerLost: " + gImagesToTrack[ret["uuid"]]);
       if(gCurrentImage == ret["uuid"])
       {
-        gCurrentImage = "";
+        //gCurrentImage = "";
       }
     }.bind(aero);
     
