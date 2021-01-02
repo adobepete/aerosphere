@@ -57,14 +57,12 @@ function minimize()
 
 function toggleMode()
 {
-  if(gNextMode == "EDIT")
+  if(gNextMode == "PLAY")
   {
-    gNextMode = "PLAY";
     window.location = "https://main.d2bl8ynaqy7ng6.amplifyapp.com/?album=Basement1";
   }
   else
   {
-    gNextMode = "EDIT";
     window.location = "https://main.d2bl8ynaqy7ng6.amplifyapp.com/";
   }
 }
