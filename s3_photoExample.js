@@ -70,7 +70,7 @@ function InitializeAeroCallbacks()
 
     aero.onImageMarkerFound = function(ret) {
       console.log("OnImageMarkerFound: " + gImagesToTrack[ret["uuid"]]);
-      if(gCurrentImage == "")
+      if(gCurrentImage == "" && gImagesToTrack[ret["uuid"]] != undefined)
       {
         gCurrentImage = ret["uuid"];
         var url = escape(gImagesToTrack[ret["uuid"]].url);
