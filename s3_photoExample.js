@@ -84,7 +84,8 @@ function InitializeAeroCallbacks()
       for (const imageID in gImagesToTrack) {
         var url = gImagesToTrack[imageID].url;
         var path = gImagesToTrack[imageID].path;
-        AddImageMarker(url, path);
+        if(imageID != gCurrentImage)
+          AddImageMarker(url, path);
       }
       
     }.bind(aero);
