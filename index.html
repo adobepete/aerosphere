@@ -11,7 +11,7 @@
        }
        var myURL = window.location.href;
        var gMode = "EDIT";
-       if(myURL.includes("album="))
+       if(!myURL.includes("album="))
        {
         gMode = "PLAY";
         playAlbum(myURL.substring(myURL.indexOf("album=")+6));
