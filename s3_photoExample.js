@@ -97,7 +97,7 @@ function InitializeAeroCallbacks()
       {
         gCurrentImage = url;
         aero.openURL({"url":escape(url)});
-        //minimize();
+        minimize();
       }
 
     }.bind(aero);
