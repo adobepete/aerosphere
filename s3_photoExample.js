@@ -20,6 +20,7 @@ var gCurrentImage = "";
 var gFilesToDwonload = [];
 var gIsDownloading = false;
 var gQueueID;
+var gSkipFirstScene = true;
 
 function DownloadFile(url)
   {
@@ -75,7 +76,7 @@ function InitializeAeroCallbacks()
       console.log("OnImageMarkerFound: " + gImagesToTrack[ret["uuid"]]);
       var url = gImagesToTrack[ret["uuid"]].url;
 
-      if(gCurrentImage != url)
+      if(gCurrentImage != url && gFilesToDwonload.length == 0)
       {
         gCurrentImage = url;
         aero.openURL({"url":escape(url)});
@@ -84,13 +85,19 @@ function InitializeAeroCallbacks()
 
     }.bind(aero);
     
-    aero.onSceneLoaded = function(ret) {
+    aero.onSceneLoaded= function(ret) {
+
+      if(gSkipFirstScene)
+      {
+        gSkipFirstScene = false;
+        return;
+      }
       var imagesToTrack = gImagesToTrack;
       gImagesToTrack = {};
       for (const imageID in imagesToTrack) {
         var url = imagesToTrack[imageID].url;
         var path = imagesToTrack[imageID].path;
-        //if(url != gCurrentImage)
+        //if(url != gImagesToTrack)
           AddImageMarker(url, path);
       }
       
