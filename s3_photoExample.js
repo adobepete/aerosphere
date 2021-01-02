@@ -90,7 +90,7 @@ function InitializeAeroCallbacks()
       for (const imageID in imagesToTrack) {
         var url = imagesToTrack[imageID].url;
         var path = imagesToTrack[imageID].path;
-        if(url != gCurrentImage)
+        //if(url != gCurrentImage)
           AddImageMarker(url, path);
       }
       
