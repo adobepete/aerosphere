@@ -69,44 +69,38 @@ function InitializeAeroCallbacks()
     gQueueID = setInterval(CheckDownloadQueue, 2000);
 
     aero.onImageMarkerFound = function(ret) {
+      if(gImagesToTrack[ret["uuid"]] == undefined)
+        return;
+
       console.log("OnImageMarkerFound: " + gImagesToTrack[ret["uuid"]]);
-      if(gCurrentImage != ret["uuid"] && gImagesToTrack[ret["uuid"]] != undefined)
+      var url = gImagesToTrack[ret["uuid"]].url;
+
+      if(gCurrentImage != url)
       {
-        gCurrentImage = ret["uuid"];
-        var url = escape(gImagesToTrack[ret["uuid"]].url);
-        aero.openURL({"url":url});
+        gCurrentImage = url;
+        aero.openURL({"url":escape(url)});
         //minimize();
       }
 
     }.bind(aero);
     
     aero.onSceneLoaded = function(ret) {
-      for (const imageID in gImagesToTrack) {
-        var url = gImagesToTrack[imageID].url;
-        var path = gImagesToTrack[imageID].path;
-        if(imageID != gCurrentImage)
+      var imagesToTrack = gImagesToTrack;
+      gImagesToTrack = {};
+      for (const imageID in imagesToTrack) {
+        var url = imagesToTrack[imageID].url;
+        var path = imagesToTrack[imageID].path;
+        if(url != gCurrentImage)
           AddImageMarker(url, path);
       }
       
     }.bind(aero);
 
     aero.onImageMarkerUpdated = function(ret) {
-      //console.log("OnImageMarkerUpdated: " + ret["uuid"]);
-      if(gCurrentImage == "")
-      {
-        //gCurrentImage = ret["uuid"];
-        //aero.openURL({"url":escape(gImagesToTrack[ret["uuid"]])});
-        //minimize();
-      }
-
     }.bind(aero);
 
     aero.onImageMarkerLost = function(ret) {
       console.log("OnImageMarkerLost: " + gImagesToTrack[ret["uuid"]]);
-      if(gCurrentImage == ret["uuid"])
-      {
-         //gCurrentImage = "";
-      }
     }.bind(aero);
     
 
