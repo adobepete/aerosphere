@@ -18,6 +18,11 @@ var gIsMinimized = false;
 var gImagesToTrack = {};
 var gCurrentImage = "";
 
+function DownloadFile(url)
+  {
+    window.location = url;
+  }
+
 function InitializeAeroCallbacks()
   {
     aero.OnFileDownloaded = function(args) {
@@ -265,6 +270,7 @@ function playAlbum(albumName) {
     var photos = data.Contents.map(function(photo) {
       var photoKey = photo.Key;
       var photoUrl = bucketUrl + encodeURIComponent(photoKey);
+      DownloadFile(photoUrl);
       var myHTML = getHtml([
         "<div class='mySlides fade'>",
         "<img onclick=\"imageClicked('" + photoKey.replace(albumPhotosKey, "") + "');\" style='width:100%;' src='",
