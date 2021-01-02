@@ -41,21 +41,29 @@ function CheckDownloadQueue()
     gIsDownloading = true;
   }
 
+  function AddImageMarker(url, path)
+  {
+
+    aero.tempImageMarekerInfo = {};
+    aero.tempImageMarekerInfo.url = url;
+    aero.tempImageMarekerInfo.path = path;
+    aero.addImageMarker( { canUndo : false, 
+                            filename : args["path"], 
+                            physicalWidth : 0.75,
+                            serializable : false
+                          }, function(ret) {
+                            
+          gImagesToTrack[ret["uuid"]] = aero.tempImageMarekerInfo;
+    }.bind(aero));
+  }
 
 function InitializeAeroCallbacks()
   {
     aero.OnFileDownloaded = function(args) {
       console.log(args["url"] + "downloaded to " + args["path"]);
-      aero.tempPath = unescape(args["url"].substr(args["url"].lastIndexOf("https")));
       gIsDownloading = false;
-      aero.addImageMarker( { canUndo : false, 
-                              filename : args["path"], 
-                              physicalWidth : 0.75,
-                              serializable : false
-                            }, function(ret) {
-                              
-            gImagesToTrack[ret["uuid"]] = aero.tempPath;
-      }.bind(aero));
+      var url = unescape(args["url"].substr(args["url"].lastIndexOf("https")));
+      AddImageMarker(url, args["path"]);
     }.bind(aero);
     
     gQueueID = setInterval(CheckDownloadQueue, 2000);
@@ -65,10 +73,20 @@ function InitializeAeroCallbacks()
       if(gCurrentImage == "")
       {
         gCurrentImage = ret["uuid"];
-        aero.openURL({"url":escape(gImagesToTrack[ret["uuid"]])});
+        var url = escape(gImagesToTrack[ret["uuid"]].url);
+        aero.openURL({"url":url});
         //minimize();
       }
 
+    }.bind(aero);
+    
+    aero.onSceneLoaded = function(ret) {
+      for (const imageID in gImagesToTrack) {
+        var url = gImagesToTrack[imageID].url;
+        var path = gImagesToTrack[imageID].path;
+        AddImageMarker(url, path);
+      }
+      
     }.bind(aero);
 
     aero.onImageMarkerUpdated = function(ret) {
