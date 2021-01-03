@@ -70,7 +70,8 @@ function CheckDownloadQueue()
     aero.addImageMarker( { canUndo : false, 
                             filename : path, 
                             physicalWidth : 0.75,
-                            serializable : false
+                            serializable : false,
+                            detectionResponse : 0
                           }, function(ret) {
           gImagesToTrack[ret["uuid"]] = aero.tempImageMarekerInfo;
           gMarkerAdding = false;
