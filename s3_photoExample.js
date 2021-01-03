@@ -98,6 +98,10 @@ function InitializeAeroCallbacks()
       if(gCurrentImage != url && gDownloadQueue.length == 0)
       {
         gCurrentImage = url;
+
+        for (const imageID in imagesToTrack) {
+          aero.removeImageMarker( { canUndo : false, uuid : imageID }, function(ret) {}.bind(aero));
+        }
         aero.openURL({"url":escape(url)});
         minimize();
       }
@@ -116,7 +120,6 @@ function InitializeAeroCallbacks()
       for (const imageID in imagesToTrack) {
         var url = imagesToTrack[imageID].url;
         var path = imagesToTrack[imageID].path;
-        aero.removeImageMarker( { canUndo : false, uuid : imageID }, function(ret) {}.bind(aero));
 
         if(url != gCurrentImage)
         {
