@@ -99,7 +99,7 @@ function InitializeAeroCallbacks()
       {
         gCurrentImage = url;
 
-        for (const imageID in imagesToTrack) {
+        for (const imageID in gImagesToTrack) {
           aero.removeImageMarker( { canUndo : false, uuid : imageID }, function(ret) {}.bind(aero));
         }
         aero.openURL({"url":escape(url)});
@@ -113,7 +113,7 @@ function InitializeAeroCallbacks()
       if(gSkipFirstScene)
       {
         gSkipFirstScene = false;
-        return;
+        //return;
       }
       var imagesToTrack = gImagesToTrack;
       gImagesToTrack = {};
