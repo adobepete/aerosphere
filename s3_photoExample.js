@@ -116,7 +116,8 @@ function InitializeAeroCallbacks()
       for (const imageID in imagesToTrack) {
         var url = imagesToTrack[imageID].url;
         var path = imagesToTrack[imageID].path;
-    
+        aero.removeImageMarker( { canUndo : false, uuid : imageID }, function(ret) {}.bind(aero));
+
         if(url != gCurrentImage)
         {
           var tempImageMarekerInfo = {};
