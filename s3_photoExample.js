@@ -1,6 +1,7 @@
-var albumBucketName = "aeropete1";
-var bucketRegion = "us-east-2";
-var IdentityPoolId = "us-east-2:fc6d007c-3a2b-4372-be29-0f442684fdd8";
+var albumBucketName = "aeropete4";
+var bucketRegion = "us-east-1";
+var IdentityPoolId = "us-east-1:8e2fafe9-b53f-4f9f-9a4c-7efd7936aa21";
+var mainURL = "https://adobepete.github.io/aerosphere/";
 
 AWS.config.update({
   region: bucketRegion,
@@ -151,9 +152,9 @@ function InitializeAeroCallbacks()
 function maximize()
 {
     gIsMinimized = false;
-    
+    var url = mainURL + "?album=Basement1";
     aero.showWebView( {
-        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/?album=Basement1",
+        "url":mainURL,
         "webViewID":"AeroSphere",
         "vOffset":15,
         "hOffset":0,
@@ -170,9 +171,10 @@ function maximize()
 function minimize()
 {
     gIsMinimized = true;
+    var url = mainURL + "?album=Basement1";
     
     aero.showWebView( {
-        "url":"https://main.d2bl8ynaqy7ng6.amplifyapp.com/?album=Basement1",
+        "url":url,
         "webViewID":"AeroSphere",
         "vOffset":15,
         "hOffset":0,
