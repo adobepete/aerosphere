@@ -5,13 +5,14 @@
     <link rel="stylesheet" href="slideshow.css">
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.819.0.min.js"></script>
     <script src="./s3_photoExample.js"></script>
+    <script src="./MultiMarker.js"></script>
     <script>
        var myURL = window.location.href;
        var gNextMode = "EDIT";
        if(myURL.includes("album="))
        {
         gNextMode = "EDIT";
-        playAlbum(myURL.substring(myURL.indexOf("album=")+6));
+        downloadMarkers(myURL.substring(myURL.indexOf("album=")+6));
        }
        else
        {
@@ -29,7 +30,9 @@
   <div id="rightpic" style="background-position: top right;float: right;" >
     <a id="modeButton" href="javascript:toggleMode();" >EDIT</a>
   </div>
-    <div id="app"></div>
+    <div id="app">
+      <br><br>Downloading Image Markers....<br>
+      <img style="width:64px;" src='progress.gif'></div>
   </body>
 </html>
 

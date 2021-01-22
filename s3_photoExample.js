@@ -15,209 +15,6 @@ var s3 = new AWS.S3({
   params: { Bucket: albumBucketName }
 });
 
-var gIsMinimized = false;
-var gImagesToTrack = {};
-var gCurrentImage = "";
-var gDownloadQueue = [];
-var gMarkerQueue = [];
-var gIsDownloading = false;
-var gIntervalID;
-var gSkipFirstScene = true;
-var gMarkerAdding = false;
-
-function DownloadFile(url)
-  {
-    gDownloadQueue.push(url);
-  }
-
-function CheckDownloadQueue()
-  {
-    if(gIsDownloading)
-      return;
-
-    if(gDownloadQueue.length == 0) {
-
-      if(gMarkerQueue.length == 0)
-      {
-        clearInterval(gIntervalID);
-      }
-      else if(!gMarkerAdding)
-      {
-        var imageObject = gMarkerQueue.pop();
-        AddImageMarker(imageObject.url, imageObject.path);
-      }
-      return;
-    }
-
-    var url = gDownloadQueue.pop();
-    window.location = url;
-    gIsDownloading = true;
-  }
-
-  function ImageMarkerDownloaded(url, path)
-  {
-    var tempImageMarekerInfo = {};
-    tempImageMarekerInfo.url = url;
-    tempImageMarekerInfo.path = path;
-    gMarkerQueue.push(tempImageMarekerInfo);
-  }
-
-  function AddImageMarker(url, path)
-  {
-    aero.tempImageMarekerInfo = {};
-    aero.tempImageMarekerInfo.url = url;
-    aero.tempImageMarekerInfo.path = path;
-    gMarkerAdding = true;
-    aero.addImageMarker( { canUndo : false, 
-                            filename : path, 
-                            physicalWidth : 0.75,
-                            serializable : false,
-                            detectionResponse : 0
-                          }, function(ret) {
-          gImagesToTrack[ret["uuid"]] = aero.tempImageMarekerInfo;
-          gMarkerAdding = false;
-    }.bind(aero));
-  }
-
-function InitializeAeroCallbacks()
-  {
-    aero.OnFileDownloaded = function(args) {
-      console.log(args["url"] + "downloaded to " + args["path"]);
-      gIsDownloading = false;
-      var url = unescape(args["url"].substr(args["url"].lastIndexOf("https")));
-      ImageMarkerDownloaded(url, args["path"]);
-    }.bind(aero);
-    
-    gIntervalID = setInterval(CheckDownloadQueue, 2000);
-
-    aero.onImageMarkerFound = function(ret) {
-      if(gImagesToTrack[ret["uuid"]] == undefined)
-        return;
-
-      console.log("OnImageMarkerFound: " + gImagesToTrack[ret["uuid"]]);
-      var url = gImagesToTrack[ret["uuid"]].url;
-
-      if(gCurrentImage != url && gDownloadQueue.length == 0)
-      {
-        gCurrentImage = url;
-
-        for (const imageID in gImagesToTrack) {
-          aero.removeImageMarker( { canUndo : false, uuid : imageID }, function(ret) {}.bind(aero));
-        }
-        aero.openURL({"url":escape(url)});
-        minimize();
-      }
-
-    }.bind(aero);
-    
-    aero.onSceneLoaded= function(ret) {
-
-      if(gSkipFirstScene)
-      {
-        gSkipFirstScene = false;
-        //return;
-      }
-      var imagesToTrack = gImagesToTrack;
-      gImagesToTrack = {};
-      for (const imageID in imagesToTrack) {
-        var url = imagesToTrack[imageID].url;
-        var path = imagesToTrack[imageID].path;
-
-        if(url != gCurrentImage)
-        {
-          var tempImageMarekerInfo = {};
-          tempImageMarekerInfo.url = url;
-          tempImageMarekerInfo.path = path;
-          gMarkerQueue.push(tempImageMarekerInfo);
-        }
-        else
-        {
-          gImagesToTrack[imageID] = imagesToTrack[imageID];
-        }
-      }
-      gIntervalID = setInterval(CheckDownloadQueue, 2000);
-      
-    }.bind(aero);
-
-    aero.onImageMarkerUpdated = function(ret) {
-    }.bind(aero);
-
-    aero.onImageMarkerLost = function(ret) {
-      console.log("OnImageMarkerLost: " + gImagesToTrack[ret["uuid"]]);
-    }.bind(aero);
-    
-
-  }
-
-function maximize()
-{
-    gIsMinimized = false;
-    var url = mainURL + "?album=Basement1";
-    aero.showWebView( {
-        "url":mainURL,
-        "webViewID":"AeroSphere",
-        "vOffset":15,
-        "hOffset":0,
-        "vAlign":"top",
-        "hAlign":"left",
-        "width":100,
-        "height":70,
-        "titleBar": false,
-        "hideAeroUI": true
-    }
-    );
-}
-
-function minimize()
-{
-    gIsMinimized = true;
-    var url = mainURL + "?album=Basement1";
-    
-    aero.showWebView( {
-        "url":url,
-        "webViewID":"AeroSphere",
-        "vOffset":15,
-        "hOffset":0,
-        "vAlign":"top",
-        "hAlign":"left",
-        "width":12,
-        "height":6,
-        "titleBar": false,
-        "hideAeroUI": true
-    }
-    );
-}
-
-
-function toggleMode()
-{
-  var myURL = window.location.href;
-  if(myURL.includes("album="))
-  {
-    myURL = myURL.substring(0,myURL.indexOf("album=")-1);
-  }
-
-  if(gNextMode == "PLAY")
-    myURL += "?album=Basement1";
-
-  window.location = myURL;
-}
-
-
-function logoClicked()
-{
-    if(gIsMinimized)   
-        maximize();
-    else
-        minimize();
-}
-
-function imageClicked(url)
-{
-    aero.openURL({"url":escape(url)});
-    minimize();
-}
-
 function listAlbums() {
   s3.listObjects({ Delimiter: "/" }, function(err, data) {
     if (err) {
@@ -346,7 +143,8 @@ function viewAlbum(albumName) {
   });
 }
 
-function playAlbum(albumName) {
+function downloadMarkers(albumName) {
+  gAlbumName = albumName;
   var albumPhotosKey = encodeURIComponent(albumName) + "/";
   s3.listObjects({ Prefix: albumPhotosKey }, function(err, data) {
     if (err) {
@@ -360,10 +158,28 @@ function playAlbum(albumName) {
       var photoKey = photo.Key;
       var photoUrl = bucketUrl + encodeURIComponent(photoKey);
       DownloadFile(photoUrl);
+    });
+  });
+}
+
+function playAlbum(albumName) {
+  var albumPhotosKey = encodeURIComponent(albumName) + "/";
+  s3.listObjects({ Prefix: albumPhotosKey }, function(err, data) {
+    if (err) {
+      return alert("There was an error viewing your album: " + err.message);
+    }
+    // 'this' references the AWS.Response instance that represents the response
+    var href = this.request.httpRequest.endpoint.href;
+    var bucketUrl = href + albumBucketName + "/";
+
+    var photos = data.Contents.map(function(photo) {
+      var photoKey = photo.Key;
+      var photoUrl = bucketUrl + encodeURIComponent(photoKey);
+      //DownloadFile(photoUrl);
       var myHTML = getHtml([
         "<div class='mySlides fade'>",
         "<img onclick=\"imageClicked('" + photoKey.replace(albumPhotosKey, "") + "');\" style='width:100%;' src='",
-        photoUrl,
+        photoUrl+"?a="+Math.random()+".png",
         "'/>",
         "</div>"
       ]);
@@ -391,7 +207,8 @@ function playAlbum(albumName) {
       }
       slideIndex++;
       if (slideIndex > slides.length) {slideIndex = 1}
-      slides[slideIndex-1].style.display = "block";
+      if (slideIndex <= slides.length)
+        slides[slideIndex-1].style.display = "block";
       setTimeout(showSlides, 2000); // Change image every 2 seconds
     }
     showSlides();
