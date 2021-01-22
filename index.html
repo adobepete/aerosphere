@@ -7,18 +7,7 @@
     <script src="./s3_photoExample.js"></script>
     <script src="./MultiMarker.js"></script>
     <script>
-       var myURL = window.location.href;
-       var gNextMode = "EDIT";
-       if(myURL.includes("album="))
-       {
-        gNextMode = "EDIT";
-        downloadMarkers(myURL.substring(myURL.indexOf("album=")+6));
-       }
-       else
-       {
-        gNextMode = "PLAY";
-        listAlbums();
-       }
+       
 
        
     </script>

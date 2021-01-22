@@ -9,6 +9,7 @@ var gIntervalID;
 var gIsFirstScene = true;
 var gMarkerAdding = false;
 var gAlbumName = "";
+var gNextMode = "EDIT";
 
 function DownloadFile(url)
 {
@@ -75,7 +76,6 @@ function InitializeAeroCallbacks()
     ImageMarkerDownloaded(url, args["path"]);
   }.bind(aero);
   
-  gIntervalID = setInterval(CheckDownloadQueue, 2000);
 
   aero.onImageMarkerFound = function(ret) {
     if(gImagesToTrack[ret["uuid"]] == undefined)
@@ -133,7 +133,17 @@ function InitializeAeroCallbacks()
     console.log("OnImageMarkerLost: " + gImagesToTrack[ret["uuid"]]);
   }.bind(aero);
   
-
+  var myURL = window.location.href;
+  if(myURL.includes("album="))
+  {
+     gNextMode = "EDIT";
+      downloadMarkers(myURL.substring(myURL.indexOf("album=")+6));
+  }
+  else
+  {
+      gNextMode = "PLAY";
+      listAlbums();
+  }
 }
 
 function maximize()
@@ -185,7 +195,7 @@ function toggleMode()
   }
 
   if(gNextMode == "PLAY")
-    myURL += "?album=Basement1";
+    myURL += "?album="+gAlbumName;
 
   window.location = myURL;
 }

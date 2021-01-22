@@ -159,6 +159,8 @@ function downloadMarkers(albumName) {
       var photoUrl = bucketUrl + encodeURIComponent(photoKey);
       DownloadFile(photoUrl);
     });
+
+    gIntervalID = setInterval(CheckDownloadQueue, 2000);
   });
 }
 
